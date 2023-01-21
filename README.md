@@ -1,4 +1,4 @@
-# X-Space-Fastapi
+# Space-X-Fastapi
 App using fastapi
 
 ## Technology Stack:
@@ -7,17 +7,22 @@ App using fastapi
 * Pytest
 * Sqlalchemy
 * Postgres
+* Docker
 
 
 ## How to start the app ?
 ```
 git clone git@github.com:emmanuel-santos1/space-x.git
-cd .\x-space\
-mkvirtualenv -p python3.10 -a x-space x-space  #create a virtual environment
+cd .\space-x\
+mkvirtualenv -p python3.10 -a space-x space-x  #create a virtual environment
 pip install -r .\requirements.txt
-docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload  #start server
+cp .env-template .env
+complete all environmet vars in .env file
+docker build .
+docker-compose build app
+docker-compose up app
 visit  127.0.0.1:8000/
+Go to doc for more information
 ```
 
 ## How to run tests ?
@@ -38,6 +43,6 @@ Features:
  - ✔️ Password Hashing
  - ✔️ Unit Testing (What makes an app stable)
  - ✔️ Authentication login/create user/get token
- - ✔️ Authorization/Permissions 
+ - ✔️ Authorization/Permissions
  - ✔️ Logging
  - ✔️ Throttling

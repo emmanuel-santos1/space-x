@@ -1,0 +1,41 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+  <title>Task Board</title>
+{% endblock %}
+
+{% block content %}
+  {% with msg=msg %}
+    {% include "components/alerts.html" %}
+  {% endwith %}
+  <div class="container">
+  {% if user %}
+    <div class="row">
+      <div class="col">
+        <h1 class="display-5">Find Task..</h1>
+      </div>
+    </div>
+    <div class="row">
+        {% for t in tasks %}
+          <div class="col-lg-4 col-md-3 col-sm-10 mr-auto">
+            {% with obj=t %}
+            {% include "components/cards.html" %}
+            {% endwith %}
+
+            {% if loop.index %3 %}
+              </div>
+            {% else %}
+              </div></div><br><div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-warning">You must be authenticated to see results</div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

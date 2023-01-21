@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+# Dependencies
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli","ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./volumes/redis:/data
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: mypass
+      POSTGRES_USER: space-x
+      POSTGRES_DB: space-x
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "psql", "-h", "localhost", "-p", "5432", "-U", "space-x", "-d", "space-x", "-c", "SELECT 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+
+  # Services
+  app:
+    build:
+      context: ./
+      target: release
+    image: space-x
+    restart: on-failure
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    command: runserver
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./entrypoint.sh:/entrypoint.sh
+    tty: true
+    stdin_open: true

@@ -1,0 +1,10 @@
+<div class="card shadow p-3 mb-2 bg-body rounded" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{obj.type}}</h5>
+    <p class="card-text">Title : {{obj.title or 'NO TITLE'}}</p>
+    <p class="card-text">Description : {{obj.description or 'NO DESCRIPTION'}}</p>
+    {% if obj.category %}
+    <p class="card-text">Category : {{obj.category}}</p>
+    {% endif %}
+  </div>
+</div>
